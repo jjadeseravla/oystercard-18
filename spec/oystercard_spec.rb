@@ -49,11 +49,21 @@ describe Oystercard do
     end
   end
 
-  it 'can touch out' do
-    subject.top_up(20)
-    subject.touch_in
-    subject.touch_out
-    expect(subject).not_to be_in_journey
+  describe '#touch_out' do
+
+    it 'can touch out' do
+      subject.top_up(20)
+      subject.touch_in
+      subject.touch_out
+      expect(subject).not_to be_in_journey
+    end
+
+    it 'can deduct money when touch out' do
+      subject.top_up(20)
+      subject.touch_in
+      expect{ subject.touch_out }.to change{ subject.balance }.by(-Oystercard::MIN_CHARGE)
+    end
+
   end
 
 end
